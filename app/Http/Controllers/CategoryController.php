@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryStoreRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -19,8 +21,11 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(CategoryStoreRequest $request)
     {
+        $validated = $request->all();
+        $category = Category::create($validated);
+        return response()->json($category, 201);
     }
 
     /**

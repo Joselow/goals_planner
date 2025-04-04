@@ -24,6 +24,8 @@ Route::get('/goals', function () {
     ], 200);
 });
 
+Route::post('/categories/create', [CategoryController::class,  'create']);
+
 
 Route::get('/categories', [CategoryController::class, 'index'])
     ->name('categories.index');

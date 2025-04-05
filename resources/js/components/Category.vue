@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
     category: {
@@ -18,7 +18,9 @@ const handleClick = async () => {
     // console.log(isVisibleCard.value);
 }
 
-const borderColor = `2px solid ${props.category?.color}`
+const borderColor = computed(() => {
+    return `2px solid ${props.category?.color}`
+}) 
 
 </script>
 

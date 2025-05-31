@@ -16,6 +16,9 @@ const props = defineProps({
     }
 });
 
+console.log(props.show);
+
+
 const emit = defineEmits(['close']);
 
 watch(() => props.show, () => {

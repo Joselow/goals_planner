@@ -1,5 +1,7 @@
 import { ref } from 'vue'
 
+import { toast } from 'vue-sonner'
+
 export function useCategory() {
     const categories = ref([])
 
@@ -27,7 +29,7 @@ export function useCategory() {
                 url: 'categories/create',
                 data: { name, color }
             })
-            alert('Categoria creada correctamente')
+            toast.success('Categoría creada correctamente')
             console.log(data);
             // closeCategoryModal()
 
@@ -36,7 +38,7 @@ export function useCategory() {
                 data
             }
         } catch (error) {
-            alert(error.response?.data?.message);
+            toast.error(error.response?.data?.message)
 
             return {
                 success: false,

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {   
@@ -13,4 +15,13 @@ class Category extends Model
         'color',
         'user_id'
     ];
+
+    
+    public function goals(): HasMany {
+        return $this->hasMany(Goal::class, 'category_id', 'id');
+    }
+
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class , 'user_id', 'id');
+    }
 }

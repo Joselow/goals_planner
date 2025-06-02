@@ -15,7 +15,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::get('/goals', [GoalController::class, 'index'])->name('goals.index');
+// Route::get('/goals', [GoalController::class, 'index'])->name('goals.index');
 
 // Route::get('/goals', function () {
 //     return response()->json([
@@ -35,13 +35,13 @@ Route::middleware('auth')->group(function () {
         ->name('categories.index');
     });
 
-    // Route::controller(GoalController::class)->group(function () {
-    //     Route::get('/goals', [GoalController::class, 'index'])->name('goals.index');
-    //     Route::apiResource('goal', GoalController::class)->except(['show', 'update', 'index']);
-    // });
+    Route::controller(GoalController::class)->group(function () {
+        Route::get('/goals', [GoalController::class, 'index'])->name('goals.index');
+        Route::apiResource('goal', GoalController::class)->except(['show', 'update', 'index']);
+    });
 
     Route::controller(TaskController::class)->group(function () {
-        Route::get('/tasks', [TaskController::class, 'index'])->name('goals.index');
+        Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
         Route::apiResource('task', TaskController::class)->except(['show', 'update', 'index']);
         Route::patch('task', [TaskController::class, 'updateCompleted'])->name('task.updateCompleted');
     });

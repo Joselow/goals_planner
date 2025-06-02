@@ -6,7 +6,7 @@ import CustomModal from '../../commons/CustomModal.vue';
 import { useCategory } from '../../composables/useCategory';
 
 
-const { createCategory } = useCategory()
+const { createCategory, loader } = useCategory()
 
 const showCategoryModal = defineModel( { default: false  })
 
@@ -48,6 +48,8 @@ const clearCategoryForm = async () => {
 </script>
 
 <template>
+    <Loader v-if="loader" />
+
      <CustomModal
         :show="showCategoryModal"
         @close="closeCategoryModal"

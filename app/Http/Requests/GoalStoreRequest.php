@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class GoalStoreRequest extends FormRequest
 {
@@ -24,10 +25,16 @@ class GoalStoreRequest extends FormRequest
         return [
             'name' => 'required|string|max:60',
             'category_id' => 'required|integer|exists:categories,id',
-            'user_id' => 'required|integer|exists:users,id',
-            'date' => 'required|date',
             // 'dateCompleted' => 'nullable|date|after_or_equal:date',
             // 'percentage' => 'nullable|numeric|min:0|max:100',
         ];
+    }
+
+        
+    public function passedValidation () {
+        $this->merge([
+            'user_id' => Auth::user()->id,
+            'date' => now(),
+        ]);
     }
 }

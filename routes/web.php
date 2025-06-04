@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(TaskController::class)->group(function () {
         Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
         Route::apiResource('task', TaskController::class)->except(['show', 'update', 'index']);
-        Route::patch('task', [TaskController::class, 'updateCompleted'])->name('task.updateCompleted');
+        Route::patch('task/{task}', [TaskController::class, 'updateCompleted'])->name('task.updateCompleted');
     });
 });
 

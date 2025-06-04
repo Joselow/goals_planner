@@ -11,7 +11,7 @@ class TaskStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class TaskStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:60',
+            'goal_id' => 'required|integer|exists:goals,id',
+            // 'dateCompleted' => 'nullable|date|after_or_equal:date',
+            // 'percentage' => 'nullable|numeric|min:0|max:100',
         ];
     }
 }

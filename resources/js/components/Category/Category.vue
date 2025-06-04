@@ -11,6 +11,7 @@ const { goals, getGoals, loader } = useGoal()
 
 
 
+const emits = defineEmits(['goalClicked'])
 const props = defineProps({
     category: {
         type: Object,
@@ -28,7 +29,7 @@ const handleClick = async () => {
     isVisibleCard.value = !isVisibleCard.value
 
     if (!goalsRequested)  {
-       reloadGoals()
+       requestGoals()
     }
 
     goalsRequested = true
@@ -40,8 +41,12 @@ const borderColor = computed(() => {
     return `2px solid ${props.category?.color}`
 }) 
 
-const reloadGoals = async () => {
+const requestGoals = async () => {
   getGoals({ categoryId: props.category.id })
+}
+
+const goalClickedFunction = async () => {
+  emits('goalClicked')
 }
 
 </script>
@@ -66,7 +71,7 @@ const reloadGoals = async () => {
 
         <FormGoal
             :category="props.category"
-            @stored="reloadGoals"
+            @stored="requestGoals"
         >
             {{ goals.length }}
         </FormGoal>
@@ -74,11 +79,12 @@ const reloadGoals = async () => {
       
         <template
              v-for="(goal, index) in goals"
-                 :key="index"
+            :key="goals.id"
         >
             <Goals
                 :goal="goal"
-                @deleted="reloadGoals"
+                @deleted="requestGoals"
+                @goalClicked="goalClickedFunction"
             />
         </template>
     </div>

@@ -2,8 +2,11 @@
 
 import { inject } from 'vue'
 import { useGoal } from '../../composables/useGoal';
+import { useGoalStore } from '../../stores/useGoalStore';
 
 const { deleteGoal, loader } = useGoal()
+
+const { setGoal } = useGoalStore()
 
 const props = defineProps({
   goal: {
@@ -14,7 +17,10 @@ const props = defineProps({
 
 const category = inject('category', null)
 
-const emits = defineEmits(['deleted'])
+console.log({ category });
+
+
+const emits = defineEmits(['deleted', 'goalClicked'])
 
 
 const handleDeleteGoal = async (e) => {
@@ -31,9 +37,11 @@ const handleDeleteGoal = async (e) => {
     emits('deleted')
   } 
 }
-``
+
 const openTasksModal = async (e) => {
-    alert('Abrir modal de tareas')
+  setGoal(props.goal) 
+
+  emits('goalClicked')    
 }
 </script>
 
@@ -53,7 +61,7 @@ const openTasksModal = async (e) => {
         </div>
         <div>
             <button class="text-sm bg-red-500 py-1 px-3 rounded-md"
-              @click="handleDeleteGoal"`
+              @click="handleDeleteGoal"
             >   
               <svg width="20px" height="20px"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 7H12H18V18C18 19.6569 16.6569 21 15 21H9C7.34315 21 6 19.6569 6 18V7Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
             </button>

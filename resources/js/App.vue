@@ -4,7 +4,9 @@ import 'vue-sonner/style.css'
 
 import { ref } from 'vue';
 
+import CustomModal from './commons/CustomModal.vue';
 import Category from './components/Category/Category.vue';
+import Tasks from './components/Tasks/Tasks.vue';
 
 import StoreCategory from './components/Category/StoreCategory.vue';
 
@@ -14,12 +16,18 @@ const { getCategories, categories, loader } = useCategory()
 getCategories()
 
 const showCategoryModal = ref(false)
+const showTasksModal = ref(false)
 
 
 const openModalCategory = async () => {
     showCategoryModal.value = true
 }
 
+const openModalTasks = async () => {
+    showTasksModal.value = true
+}
+
+// openModalTasks()
 </script>
 
 <template>
@@ -29,6 +37,22 @@ const openModalCategory = async () => {
     <Toaster 
         richColors  
     />
+
+    <CustomModal
+        :show="showTasksModal"
+        :closeable="true"
+        maxWidth="lg"
+        @close="showTasksModal = false"
+    >
+        <Tasks/>
+        <div class="px-4 py-2 flex justify-end gap-2">
+            <button type="button" 
+                @click="showTasksModal = false"
+                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Cancelar</button>
+        </div>
+    </CustomModal>
+
+
     <StoreCategory
         
         v-model="showCategoryModal"
@@ -38,7 +62,7 @@ const openModalCategory = async () => {
     <div>
         <h1 class="text-4xl font-bold text-center text-gray-300">VISUALIZADOR DE METAS </h1>
 
-        <div class="text-end">
+        <div class="text-end mt-2">
             <button class="px-3 py-1 bg-green-600 rounded-md"
                 @click="openModalCategory"
             >
@@ -54,6 +78,7 @@ const openModalCategory = async () => {
         >
             <Category 
                 :category="item"
+                @goalClicked="openModalTasks"
             />
         </div>
     </div>

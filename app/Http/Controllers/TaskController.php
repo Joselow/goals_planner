@@ -8,15 +8,16 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index() {
-        $tasks = Task::where('user_id', auth()->id)    
+    public function index(Request $request) {
+
+        $tasks = Task::where('goal_id', $request->query('goalId'))    
                     ->get();
 
         return response()->json($tasks, 200);
     }
 
  
-    public function create(TaskStoreRequest $request)
+    public function store(TaskStoreRequest $request)
     {
         $task = Task::create($request->validated());
 
@@ -34,8 +35,14 @@ class TaskController extends Controller
     }
 
     public function updateCompleted(Task $task) {
-
         $task->completed = !$task->completed;   
+
+        if (boolval($task->completed) === true) {
+            $task->observation = 'Task completed on ' . now()->format('d/m/Y H:i:s');
+        } else {
+            $task->observation = null;
+        }
+
         $task->save();
 
         return response()->json([

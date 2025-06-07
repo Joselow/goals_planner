@@ -13,9 +13,15 @@ class Category extends Model
     protected $fillable = [
         'name', 
         'color',
-        'user_id'
+        'user_id',
     ];
-
+    
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+        'percentage',
+    ];
     
     public function goals(): HasMany {
         return $this->hasMany(Goal::class, 'category_id', 'id');

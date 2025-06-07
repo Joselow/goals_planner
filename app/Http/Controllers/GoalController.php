@@ -31,14 +31,22 @@ class GoalController extends Controller
     {
         $goal = Goal::create($request->all());
 
+        \App\Events\TaskChanged::dispatch($goal);
+
         return response()->json([
             'success' => true,
             'goal' => $goal,
         ], 201);
     }
 
-    public function destroy($idGoal) {
-        $goal = Goal::destroy($idGoal);
+    public function destroy(Goal $goal) {
+        $category = $goal->category;
+
+        $goal->delete();
+        $goal->tasks()->delete();
+
+        \App\Events\TaskChanged::dispatch($category);
+
         return response()->json([
             'success' => true,
         ], 200);

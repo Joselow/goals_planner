@@ -20,6 +20,8 @@ class TaskController extends Controller
     public function store(TaskStoreRequest $request)
     {
         $task = Task::create($request->validated());
+        
+        \App\Events\TaskChanged::dispatch($task->goal);
 
         return response()->json([
             'success' => true,
@@ -27,8 +29,11 @@ class TaskController extends Controller
         ], 201);
     }
 
-    public function destroy($idTask) {
-        Task::destroy($idTask);
+    public function destroy(Task $task) {
+        $goal = $task->goal;
+        $task->delete();
+
+        \App\Events\TaskChanged::dispatch($goal);
         return response()->json([
             'success' => true,
         ], 200);
@@ -44,6 +49,8 @@ class TaskController extends Controller
         }
 
         $task->save();
+
+        \App\Events\TaskChanged::dispatch($task->goal);
 
         return response()->json([
             'success' => true,

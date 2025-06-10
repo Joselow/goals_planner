@@ -1,6 +1,8 @@
 <script setup>
-
 import { inject } from 'vue'
+
+import ProgressBar from '../../commons/ProgressBar.vue';
+
 import { useGoal } from '../../composables/useGoal';
 import { useGoalStore } from '../../stores/useGoalStore';
 
@@ -47,6 +49,15 @@ const openTasksModal = async (e) => {
 
 <template>
     <Loader v-if="loader"/>
+
+    <div class="mt-3">
+      <ProgressBar
+        :progress="goal.percentage"
+        :color="category.color"
+        :data="{ name: goal.name }"
+        height="h-3"
+        />
+    </div>
 
     <div class="cursor-pointer text-lg font-bold border rounded-md px-4 py-2 mt-2 flex justify-between"
       :style="{ borderColor: category?.color }"

@@ -2,7 +2,8 @@
 import { ref, computed, provide } from 'vue';
 
 import FormGoal from '../Goal/FormGoal.vue';
-import Goals from '../Goal/Goals.vue';
+import Goal from '../Goal/Goal.vue';
+import ProgressBar from '../../commons/ProgressBar.vue';
 
 import { useGoal } from '../../composables/useGoal';
 
@@ -55,7 +56,12 @@ const goalClickedFunction = async () => {
 
     <Loader v-if="loader" />
 
-    <div class="w-full  rounded-md border px-6 py-2 cursor-pointer"
+    <ProgressBar
+        :progress="category.percentage"
+        :color="category.color"
+        :data="{ name: category.name }"
+    />
+    <div class="w-full rounded-md border px-6 py-2 cursor-pointer"
         :style="{ border: borderColor  }"
 
         @click="handleClick"
@@ -81,7 +87,7 @@ const goalClickedFunction = async () => {
              v-for="(goal, index) in goals"
             :key="goals.id"
         >
-            <Goals
+            <Goal
                 :goal="goal"
                 @deleted="requestGoals"
                 @goalClicked="goalClickedFunction"

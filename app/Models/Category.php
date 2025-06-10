@@ -22,6 +22,10 @@ class Category extends Model
         'updated_at',
         'percentage',
     ];
+
+    protected $casts = [
+        'percentage' => 'float',
+    ];
     
     public function goals(): HasMany {
         return $this->hasMany(Goal::class, 'category_id', 'id');

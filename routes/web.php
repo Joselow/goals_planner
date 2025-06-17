@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(GoalController::class)->group(function () {
         Route::get('/goals', [GoalController::class, 'index'])->name('goals.index');
         Route::apiResource('goal', GoalController::class)->except(['show', 'update', 'index']);
+        Route::get('goal/progress', [GoalController::class, 'getProgress'])->name('goal.progress');
     });
 
     Route::controller(TaskController::class)->group(function () {

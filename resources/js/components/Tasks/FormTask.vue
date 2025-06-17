@@ -41,7 +41,7 @@ const hidedForm = (params) => {
 const handleCreateTask = async () => {
   if (!goal.value?.id) return
 
-  const { success }  = await createTask({
+  const { success } = await createTask({
     name: taskForm.value.name,
     goal_id: goal.value.id
   })

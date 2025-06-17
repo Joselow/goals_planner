@@ -19,7 +19,7 @@ const handleCheckTask = async () => {
 </script>
 
 <template>
-    <div class="rounded-lg border px-6 cursor-pointer flex items-center justify-between">
+    <div class="rounded-lg border px-6 cursor-papointer flex items-center justify-between">
         <div>
             {{  task.name  }}
         </div>

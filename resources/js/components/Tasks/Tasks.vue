@@ -4,22 +4,23 @@ import { watch, computed } from 'vue';
 import FormTask from './FormTask.vue';
 import TaskItem from './TaskItem.vue';
 
-import { useGoalStore } from '../../stores/useGoalStore';
 import { useTask } from '../../composables/useTask';
+import { useGoal } from '../../composables/useGoal';
 
-const { goal,  } = useGoalStore()
-const { tasks, getTasks, loader, deleteTask, toggleCheckTasks} = useTask()
+const { goal, getProgress } = useGoal()
+const { tasks, getTasks, loader, deleteTask, toggleCheckTasks } = useTask()
 
-// getTasks({
-//     goalId: goal.value?.id
-// })
+
 
 const requestTasks = async (params) => {
     if (!goal.value?.id) return
 
+
     getTasks({
         goalId: goal.value?.id
     })
+
+    getProgress({ goalId: goal.value?.id })
 }
 
 
@@ -50,7 +51,7 @@ const handleCheckTask = async (taskId) => {
 
     if (success) {
         requestTasks()
-    }
+    }    
 }
 
 const totalTaskChecked = computed(() => {

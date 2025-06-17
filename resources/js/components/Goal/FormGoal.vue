@@ -50,13 +50,15 @@ const hidedForm = (params) => {
 }
 
 const handleCreateGoal = async () => {
-  const { success }  = await createGoal({
+  const { success, data }  = await createGoal({
     name: categoryForm.value.name,
     category_id: props.category.id,
   })
 
   if (success) {
-    emits('stored')
+    console.log({ id: data.id });
+    
+    emits('stored', { id: data.id })
     hidedForm()
     clearCategoryForm()
   }

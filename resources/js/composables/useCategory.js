@@ -2,9 +2,10 @@ import { ref } from 'vue'
 
 import { toast } from 'vue-sonner'
 
+const categories = ref([])
+
 export function useCategory() {
     const loader = ref(false)
-    const categories = ref([])
 
     const getCategories = async () => {
         try {

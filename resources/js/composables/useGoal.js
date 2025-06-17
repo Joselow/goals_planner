@@ -2,8 +2,17 @@ import { ref } from 'vue'
 
 import { toast } from 'vue-sonner'
 
+import { useGoalStore } from '../stores/useGoalStore'
+import { useCategory } from './useCategory'
+const { goal, setGoal, clearGoal } = useGoalStore()
+
+const goals = ref([])
+
+
+
+const { categories } = useCategory()
+
 export function useGoal() {
-    const goals = ref([])
     const loader = ref(false)
 
     const getGoals = async ({ categoryId }) => {
@@ -44,7 +53,7 @@ export function useGoal() {
 
             return {
                 success: true,
-                data
+                data: data.goal
             }
         } catch (error) {
             toast.error(error.response?.data?.message)
@@ -79,11 +88,60 @@ export function useGoal() {
         } finally { loader.value = false }
     }
 
+    const getProgress = async ({ goalId = null, categoryId = null}) => {
+       try {
+            loader.value = true
+            const { data } = await window.axios({
+                method: 'GET',
+                url: 'goal/progress',
+                params: {
+                    goalId,
+                    categoryId,
+                }
+            })
+
+            const progressData = data.progress
+
+            console.log(data.progress);
+            
+
+            const goalFound = goals.value.find(goal => goal.id == progressData.goal.id)
+
+            if (goalFound) {
+                goalFound.percentage = progressData.goal.percentage
+            }
+
+            const categoryFound = categories.value.find(category => category.id == progressData.category.id)
+
+    
+            if (categoryFound) {
+                categoryFound.percentage = progressData.category.percentage
+            }
+
+
+            return {
+                success: true,
+                data: data.progress
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message)
+
+            return {
+                success: false,
+                data: null
+            }
+        } finally { loader.value = false }
+    }
+
     return {
         getGoals,
         goals,
         createGoal,
         deleteGoal,
-        loader
+        loader,
+        goal,
+        setGoal,
+        clearGoal,
+        getProgress
     }
 }

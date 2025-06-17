@@ -19,8 +19,6 @@ const props = defineProps({
 
 const category = inject('category', null)
 
-console.log({ category });
-
 
 const emits = defineEmits(['deleted', 'goalClicked'])
 
@@ -52,7 +50,7 @@ const openTasksModal = async (e) => {
 
     <div class="mt-3">
       <ProgressBar
-        :progress="goal.percentage"
+        :progress="Number(goal.percentage)"
         :color="category.color"
         :data="{ name: goal.name }"
         height="h-3"

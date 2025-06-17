@@ -27,7 +27,6 @@ const openModalTasks = async () => {
     showTasksModal.value = true
 }
 
-// openModalTasks()
 </script>
 
 <template>
@@ -44,7 +43,7 @@ const openModalTasks = async () => {
         maxWidth="lg"
         @close="showTasksModal = false"
     >
-        <Tasks/>
+        <Tasks  />
         <div class="px-4 py-2 flex justify-end gap-2">
             <button type="button" 
                 @click="showTasksModal = false"
@@ -73,7 +72,7 @@ const openModalTasks = async () => {
             </button>
         </div>
 
-        <div v-for="(item, index) in categories" :key="index"
+        <div v-for="(item, index) in categories" :key="item.id"
             class="mt-6"
         >
             <Category 

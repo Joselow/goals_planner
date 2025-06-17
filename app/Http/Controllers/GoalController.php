@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GoalStoreRequest;
+use App\Models\Category;
 use App\Models\Goal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,5 +51,37 @@ class GoalController extends Controller
         return response()->json([
             'success' => true,
         ], 200);
+    }
+
+    public function getProgress(Request $request)
+    {
+        $goal = Goal::with('category')
+                    ->find($request->query('goalId', null));
+
+        if ($goal) {
+            $category = $goal->category;
+        } else if ($request->has('categoryId')) {
+            $category = Category::find($request->query('categoryId'));
+        } else {
+            return response()->json([
+                'message' => 'Goal or Category not found',
+            ], 404);
+        }
+
+        $progress = [
+            'goal' => [
+                'id' => $goal->id ?? null,
+                'percentage' => $goal->percentage ?? 0,
+            ],
+            'category' => [
+                'id' => $category->id,
+                'percentage' => $category->percentage,
+            ]
+        ];
+
+        return response()->json([
+            'success' => true,
+            'progress' => $progress
+        ], 201);
     }
 }

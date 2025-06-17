@@ -18,6 +18,10 @@ class Goal extends Model
         'dateCompleted',
         'percentage',
     ];
+    
+    protected $casts = [
+        'percentage' => 'float',
+    ];
 
     public function category(): BelongsTo {
         return $this->belongsTo(Category::class, 'category_id', 'id');

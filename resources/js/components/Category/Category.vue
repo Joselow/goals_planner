@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, provide } from 'vue';
+import { ref, computed, provide,  } from 'vue';
 
 import FormGoal from '../Goal/FormGoal.vue';
 import Goal from '../Goal/Goal.vue';
@@ -7,17 +7,15 @@ import ProgressBar from '../../commons/ProgressBar.vue';
 
 import { useGoal } from '../../composables/useGoal';
 
-
-const { goals, getGoals, loader } = useGoal()
-
-
+const { goals, getGoals, loader, getProgress } = useGoal()
 
 const emits = defineEmits(['goalClicked'])
+
 const props = defineProps({
     category: {
         type: Object,
         required: true,
-    }
+    },
 })
 
 provide('category', props.category)
@@ -30,7 +28,7 @@ const handleClick = async () => {
     isVisibleCard.value = !isVisibleCard.value
 
     if (!goalsRequested)  {
-       requestGoals()
+        requestGoals()
     }
 
     goalsRequested = true
@@ -43,11 +41,21 @@ const borderColor = computed(() => {
 }) 
 
 const requestGoals = async () => {
-  getGoals({ categoryId: props.category.id })
+    await getGoals({ categoryId: props.category.id })
+}
+
+const handleStoredGoal = async ({ id }) => {
+    await requestGoals()
+    getProgress({ goalId: id })
 }
 
 const goalClickedFunction = async () => {
   emits('goalClicked')
+}
+
+const handleDeletedGoal = async () => {
+    requestGoals()
+    getProgress({ categoryId: props.category.id })
 }
 
 </script>
@@ -77,7 +85,7 @@ const goalClickedFunction = async () => {
 
         <FormGoal
             :category="props.category"
-            @stored="requestGoals"
+            @stored="handleStoredGoal"
         >
             {{ goals.length }}
         </FormGoal>
@@ -89,7 +97,7 @@ const goalClickedFunction = async () => {
         >
             <Goal
                 :goal="goal"
-                @deleted="requestGoals"
+                @deleted="handleDeletedGoal"
                 @goalClicked="goalClickedFunction"
             />
         </template>
